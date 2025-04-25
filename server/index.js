@@ -10,6 +10,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.get("/", (req, res) => {
+    res.send("Welcome to the Fact Checker API! Use POST /check-fact to check statements.");
+});
+
 const openai = new OpenAI({
     baseURL: "https://models.inference.ai.azure.com",
     apiKey: process.env['GITHUB_TOKEN'],  
@@ -34,7 +38,7 @@ try {
         ],
     });
 
-    res.json({result: response.data.choices[0].message.content});
+    res.json({result: response.choices[0].message.content});
 } catch (err) {
     console.log(err);
     res.status(500).send("Error checking fact");
